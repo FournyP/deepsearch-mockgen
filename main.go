@@ -13,7 +13,10 @@ func main() {
 	// Define CLI flags
 	searchDir := flag.String("search", "", "Directory to search for interfaces")
 	outputDir := flag.String("output", "", "Directory to save generated mocks")
-	
+
+	var acceptAll bool
+	flag.BoolVar(&acceptAll, "A", false, "Generate mocks for all interfaces without prompting")
+	flag.BoolVar(&acceptAll, "all", false, "Generate mocks for all interfaces without prompting")
 
 	// Parse flags
 	flag.Parse()
@@ -38,12 +41,15 @@ func main() {
 		return
 	}
 
-	// Prompt user for each interface
+	// Prompt user for each interface (or accept all when `-A/--all` provided)
 	finalPaths := make(map[string]string)
 	for iface, ifacePath := range interfaces {
-		generate := tui.PromptYesNoWithDefaultValue(fmt.Sprintf("Generate mock for %s?:", iface), true)
-		if !generate {
-			continue
+		if !acceptAll {
+			generate := tui.PromptYesNoWithDefaultValue(fmt.Sprintf("Generate mock for %s?:", iface), true)
+
+			if !generate {
+				continue
+			}
 		}
 
 		// Compute default mock path
