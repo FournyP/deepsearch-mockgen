@@ -8,8 +8,9 @@ import (
 )
 
 type textInputModel struct {
-	ti       textinput.Model
-	question string
+	ti        textinput.Model
+	question  string
+	Cancelled bool
 }
 
 func (m textInputModel) Init() tea.Cmd { return textinput.Blink }
@@ -19,7 +20,13 @@ func (m textInputModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	m.ti, cmd = m.ti.Update(msg)
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
+		// Allow Enter to confirm
 		if msg.String() == "enter" {
+			return m, tea.Quit
+		}
+		// Allow Ctrl+C to cancel the prompt
+		if msg.Type == tea.KeyCtrlC || msg.String() == "ctrl+c" {
+			m.Cancelled = true
 			return m, tea.Quit
 		}
 	}

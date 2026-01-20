@@ -1,6 +1,8 @@
 package tui
 
 import (
+	"errors"
+
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
 )
@@ -20,6 +22,9 @@ func RunInterfaceSelector(interfaces map[string]string, outputDir string) (map[s
 
 	result := make(map[string]string)
 	if fm, ok := final.(interfaceSelectorModel); ok {
+		if fm.Cancelled {
+			return nil, errors.New("cancelled")
+		}
 		for name, sel := range fm.SelectedMap() {
 			if sel {
 				result[name] = outputDir

@@ -8,9 +8,10 @@ import (
 )
 
 type interfaceSelectorModel struct {
-	lst      list.Model
-	selected map[string]bool
-	done     bool
+	lst       list.Model
+	selected  map[string]bool
+	done      bool
+	Cancelled bool
 }
 
 func NewInterfaceSelector(items []list.Item) interfaceSelectorModel {
@@ -36,6 +37,17 @@ func (m interfaceSelectorModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "q":
 			m.done = true
 			return m, tea.Quit
+		case "ctrl+c":
+			m.done = true
+			m.Cancelled = true
+			return m, tea.Quit
+		default:
+			// also respond to explicit Ctrl+C key type
+			if msg.Type == tea.KeyCtrlC {
+				m.done = true
+				m.Cancelled = true
+				return m, tea.Quit
+			}
 		case " ":
 			idx := m.lst.Index()
 			if idx >= 0 && idx < len(m.lst.Items()) {
