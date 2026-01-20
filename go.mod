@@ -1,4 +1,4 @@
-module github.com/FournyP/mockgen-cmd
+module github.com/FournyP/deepsearch-mockgen
 
 go 1.24.0
 

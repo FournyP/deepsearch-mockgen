@@ -5,15 +5,15 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/FournyP/mockgen-cmd/generator"
-	"github.com/FournyP/mockgen-cmd/tui"
+	"github.com/FournyP/deepsearch-mockgen/generator"
+	"github.com/FournyP/deepsearch-mockgen/tui"
 )
 
 func main() {
 	// Define CLI flags
 	searchDir := flag.String("search", "", "Directory to search for interfaces")
 	outputDir := flag.String("output", "", "Directory to save generated mocks")
-	deepSearch := flag.Bool("deep", false, "Enable deep search")
+	
 
 	// Parse flags
 	flag.Parse()
@@ -27,12 +27,8 @@ func main() {
 		*outputDir = tui.PromptInput("Enter the output directory:")
 	}
 
-	if !flag.Lookup("deep").Value.(flag.Getter).Get().(bool) {
-		*deepSearch = tui.PromptYesNoWithDefaultValue("Enable deep search?", true)
-	}
-
 	// Find interfaces
-	interfaces, err := generator.FindInterfaces(*searchDir, *deepSearch)
+	interfaces, err := generator.FindInterfaces(*searchDir)
 	if err != nil {
 		log.Fatal(err)
 	}

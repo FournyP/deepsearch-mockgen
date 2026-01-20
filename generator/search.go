@@ -10,14 +10,11 @@ import (
 )
 
 // FindInterfaces searches for Go interfaces in the specified directory.
-func FindInterfaces(root string, deep bool) (map[string]string, error) {
+func FindInterfaces(root string) (map[string]string, error) {
 	interfaces := make(map[string]string)
 
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if err != nil || !strings.HasSuffix(info.Name(), ".go") || strings.HasSuffix(info.Name(), "_test.go") {
-			return nil
-		}
-		if !deep && filepath.Dir(path) != root {
 			return nil
 		}
 

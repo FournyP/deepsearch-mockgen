@@ -1,11 +1,11 @@
-# Mockgen CMD
+# Deepsearch-mockgen
 
 This is a simple tool to generate mocks for Go interfaces. It uses the `mockgen` tool from the `[github.com/golang/mock](https://github.com/uber-go/mock)` package.
 
 ## Usage
 
 ```bash
-mockgen-cmd
+deepsearch-mockgen
 ```
 
 To build the tool, run:
@@ -17,5 +17,5 @@ go build .
 Move the binary to the golang bin directory:
 
 ```bash
-mv mockgen-cmd $GOPATH/bin
+mv deepsearch-mockgen $GOPATH/bin
 ```
